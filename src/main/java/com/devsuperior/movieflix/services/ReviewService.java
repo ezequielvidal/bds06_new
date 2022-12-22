@@ -50,7 +50,7 @@ public class ReviewService {
 		Movie movie = movieRepository.getOne(dto.getMovieId());
 		entity.setMovie(movie);
 		
-		User user = userRepository.getOne(dto.getUser().getId()); 
+		//User user = new User()   (dto.getUser().getId()); ver aqui
 		entity.setUser(user);
 	}
 }
