@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.devsuperior.movieflix.dto.ReviewDTO;
+import com.devsuperior.movieflix.dto.UserDTO;
 import com.devsuperior.movieflix.entities.Movie;
 import com.devsuperior.movieflix.entities.Review;
 import com.devsuperior.movieflix.entities.User;
 import com.devsuperior.movieflix.repositories.MovieRepository;
 import com.devsuperior.movieflix.repositories.ReviewRepository;
-import com.devsuperior.movieflix.repositories.UserRepository;
 
 @Service
 public class ReviewService {
@@ -25,7 +25,7 @@ public class ReviewService {
 	private MovieRepository movieRepository;
 	
 	@Autowired
-	private UserRepository userRepository;
+	private UserService userService;
 	
 	@Transactional(readOnly = true)
 	public List<ReviewDTO> findAll(Long movieId) {
@@ -40,7 +40,7 @@ public class ReviewService {
 		Review entity = new Review();
 		copyDtoToEntity(dto, entity);
 		entity = repository.save(entity);
-		return new ReviewDTO(entity);
+		return new ReviewDTO(entity, entity.getUser());
 	}
 	
 	private void copyDtoToEntity(ReviewDTO dto, Review entity) {
@@ -50,7 +50,13 @@ public class ReviewService {
 		Movie movie = movieRepository.getOne(dto.getMovieId());
 		entity.setMovie(movie);
 		
-		//User user = new User()   (dto.getUser().getId()); ver aqui
+		UserDTO userDTO = userService.findUserLogged();
+		
+		User user = new User();
+		user.setId(userDTO.getId());
+		user.setName(userDTO.getName());
+		user.setEmail(userDTO.getEmail());
+		
 		entity.setUser(user);
 	}
 }
