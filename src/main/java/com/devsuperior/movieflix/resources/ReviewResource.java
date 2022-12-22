@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.devsuperior.movieflix.dto.ReviewWithUserDTO;
+import com.devsuperior.movieflix.dto.ReviewDTO;
 import com.devsuperior.movieflix.services.ReviewService;
 
 @RestController
@@ -20,8 +20,8 @@ public class ReviewResource {
 	private ReviewService service;
 	
 	@GetMapping(value = "/{id}/reviews")
-	public ResponseEntity<List<ReviewWithUserDTO>> findAll(@PathVariable Long id) {
-		List<ReviewWithUserDTO> list = service.findAll(id);
+	public ResponseEntity<List<ReviewDTO>> findAll(@PathVariable Long id) {
+		List<ReviewDTO> list = service.findAll(id);
 		return ResponseEntity.ok().body(list);
 	}
 }
